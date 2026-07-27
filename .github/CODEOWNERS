@@ -1,0 +1,17 @@
+# .github/CODEOWNERS
+# Route PR reviews to the right team leads based on file paths
+
+# Default fallback for any files not matched below
+*               @team-lead-handle
+
+# Backend code
+backend/        @team-lead-handle @backend-lead-handle
+
+# Frontend code
+frontend/       @team-lead-handle @frontend-lead-handle
+
+# Database and schema changes
+db/             @team-lead-handle @db-lead-handle
+
+# GitHub configuration
+.github/        @team-lead-handle
