@@ -1,0 +1,13 @@
+-------------------------------------------------------------------------------
+Test set: com.dbtraining.reconx.model.EquityTradeTest
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.042 s <<< FAILURE! -- in com.dbtraining.reconx.model.EquityTradeTest
+com.dbtraining.reconx.model.EquityTradeTest.equality_byTradeRef -- Time elapsed: 0.020 s <<< ERROR!
+java.lang.UnsupportedOperationException: TICKET-ADV019
+	at com.dbtraining.reconx.model.EquityTrade$Builder.build(EquityTrade.java:111)
+	at com.dbtraining.reconx.model.EquityTradeTest.sampleEquity(EquityTradeTest.java:46)
+	at com.dbtraining.reconx.model.EquityTradeTest.equality_byTradeRef(EquityTradeTest.java:29)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+
