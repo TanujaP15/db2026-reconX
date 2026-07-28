@@ -28,6 +28,18 @@ import java.util.Comparator;
  * ordering rule — there is no per-class compareTo override to forget to
  * update when adding a new field.
  */
+
+public sealed interface TradeType
+        permits EquityTrade, FXTrade, BondTrade, DerivativeTrade {
+
+    TradeRef tradeRef();
+    Money notional();
+    LocalDate tradeDate();
+    AssetClass assetClass();
+
+    enum AssetClass { EQUITY, FX, BOND, DERIVATIVE }
+}
+
 public sealed interface TradeType
         extends Comparable<TradeType>
         permits EquityTrade, FXTrade, BondTrade, DerivativeTrade {
