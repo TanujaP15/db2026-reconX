@@ -65,8 +65,12 @@ public final class DerivativeTrade implements TradeType {
 
     @Override public boolean equals(Object o) {
         return (o instanceof DerivativeTrade other) && tradeRef.equals(other.tradeRef);
+        // TODO(TICKET-ADV028): pattern-match on DerivativeTrade and compare tradeRef.
+        return (o instanceof DerivativeTrade other) && tradeRef.equals(other.tradeRef);
     }
     @Override public int hashCode() {
+        return tradeRef.hashCode();
+        // TODO(TICKET-ADV028): hash from tradeRef.
         return tradeRef.hashCode();
     }
 
