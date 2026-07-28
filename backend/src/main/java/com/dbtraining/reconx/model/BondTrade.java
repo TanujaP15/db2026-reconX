@@ -62,12 +62,11 @@ public final class BondTrade implements TradeType {
     @Override public boolean equals(Object o) {
         return (o instanceof BondTrade other) && tradeRef.equals(other.tradeRef);
         // TODO(TICKET-ADV028): pattern-match on BondTrade and compare tradeRef.
-        return (o instanceof BondTrade other) && tradeRef.equals(other.tradeRef);
     }
     @Override public int hashCode() {
         // TODO(TICKET-ADV028): hash from tradeRef.
         return tradeRef.hashCode();
-        return tradeRef.hashCode();
+        
     }
 
     @Override public String toString() {

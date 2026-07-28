@@ -29,16 +29,16 @@ import java.util.Comparator;
  * update when adding a new field.
  */
 
-public sealed interface TradeType
-        permits EquityTrade, FXTrade, BondTrade, DerivativeTrade {
+// public sealed interface TradeType
+//         permits EquityTrade, FXTrade, BondTrade, DerivativeTrade {
 
-    TradeRef tradeRef();
-    Money notional();
-    LocalDate tradeDate();
-    AssetClass assetClass();
+//     TradeRef tradeRef();
+//     Money notional();
+//     LocalDate tradeDate();
+//     AssetClass assetClass();
 
-    enum AssetClass { EQUITY, FX, BOND, DERIVATIVE }
-}
+//     enum AssetClass { EQUITY, FX, BOND, DERIVATIVE }
+// }
 
 public sealed interface TradeType
         extends Comparable<TradeType>
