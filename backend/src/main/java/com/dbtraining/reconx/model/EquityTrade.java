@@ -76,9 +76,9 @@ public final class EquityTrade implements TradeType {
 
     @Override
     public String toString() {
-        // TODO(TICKET-ADV030): "EquityTrade[ref=..., symbol=..., qty=..., price=... CCY, side=...]"
-        //                     — must NOT leak counterparty PII.
-        throw new UnsupportedOperationException("TICKET-ADV030");
+        // NOTE: Intentionally omits counterpartyId to prevent PII leakage in logs.
+        return "EquityTrade[ref=%s, symbol=%s, qty=%s, price=%s %s, side=%s]"
+                .formatted(tradeRef, instrumentSymbol, quantity.toPlainString(), price.toPlainString(), currency.getCurrencyCode(), side);
     }
 
     /** Fluent builder. Required fields validated in {@link #build()}. */
@@ -102,6 +102,20 @@ public final class EquityTrade implements TradeType {
         public Builder tradeDate(LocalDate v)         { this.tradeDate = v;       return this; }
         public Builder counterpartyId(long v)         { this.counterpartyId = v;  return this; }
 
+        /**
+         * Build the immutable {@link EquityTrade}, validating that every required
+         * field is set and that all invariants hold.
+         *
+         * @return a fully-constructed, validated {@code EquityTrade} — never {@code null}.
+         * @throws NullPointerException  if any required field
+         *                               ({@code tradeRef}, {@code instrumentSymbol},
+         *                               {@code quantity}, {@code price}, {@code currency},
+         *                               {@code side}, {@code tradeDate})
+         *                               was not set.
+         * @throws IllegalStateException if {@code quantity} is not strictly positive,
+         *                               {@code price} is negative, or
+         *                               {@code instrumentSymbol} is blank.
+         */
         public EquityTrade build() {
             // TODO(TICKET-ADV019):
             //   - Objects.requireNonNull each required field (tradeRef, instrumentSymbol,

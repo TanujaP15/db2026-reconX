@@ -1,8 +1,14 @@
 package com.dbtraining.reconx.model;
 
 /**
- * BUY (we acquire) / SELL (we dispose). Used across all TradeType impls.
- * Kept as a tiny enum rather than a String so a typo can't survive compile.
+ * ============================================================================
+ * Side
+ *
+ * WHAT:    Enum representing the side of a trade (BUY or SELL).
+ *          Used across all TradeType implementations.
+ * HOW:     Kept as a tiny enum rather than a String.
+ * WHY:     Prevents typos from surviving compilation.
+ * ============================================================================
  */
 public enum Side {
     BUY, SELL

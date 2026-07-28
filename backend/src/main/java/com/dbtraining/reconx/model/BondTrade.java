@@ -70,8 +70,10 @@ public final class BondTrade implements TradeType {
     }
 
     @Override public String toString() {
-        // TODO(TICKET-ADV030): "BondTrade[ref=..., isin=..., face=... CCY, coupon=..., maturity=..., side=...]"
-        throw new UnsupportedOperationException("TICKET-ADV030");
+        // NOTE: Intentionally omits counterpartyId to prevent PII leakage in logs.
+        return "BondTrade[ref=%s, isin=%s, face=%s %s, coupon=%s, maturity=%s, side=%s]"
+                .formatted(tradeRef, isin, faceValue.toPlainString(), currency.getCurrencyCode(),
+                           couponRate.toPlainString(), maturityDate, side);
     }
 
     public static final class Builder {
@@ -93,6 +95,21 @@ public final class BondTrade implements TradeType {
         public Builder tradeDate(LocalDate v)      { this.tradeDate = v; return this; }
         public Builder counterpartyId(long v)      { this.counterpartyId = v; return this; }
 
+        /**
+         * Build the immutable {@link BondTrade}, validating that every required
+         * field is set and that all invariants hold.
+         *
+         * @return a fully-constructed, validated {@code BondTrade} — never {@code null}.
+         * @throws NullPointerException  if any required field
+         *                               ({@code tradeRef}, {@code isin},
+         *                               {@code faceValue}, {@code currency},
+         *                               {@code couponRate}, {@code maturityDate},
+         *                               {@code side}, {@code tradeDate})
+         *                               was not set.
+         * @throws IllegalStateException if {@code faceValue} is not strictly positive,
+         *                               {@code isin} is blank, or
+         *                               {@code maturityDate} is in the past.
+         */
         public BondTrade build() {
     Objects.requireNonNull(tradeRef, "tradeRef");
     Objects.requireNonNull(isin, "isin");

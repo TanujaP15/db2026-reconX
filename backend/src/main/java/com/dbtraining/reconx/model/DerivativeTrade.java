@@ -72,8 +72,10 @@ public final class DerivativeTrade implements TradeType {
     }
 
     @Override public String toString() {
-        // TODO(TICKET-ADV030): "DerivativeTrade[ref=..., TYPE UNDERLYING on date, strike=... CCY, qty=..., expiry=..., side=...]"
-        throw new UnsupportedOperationException("TICKET-ADV030");
+        // NOTE: Intentionally omits counterpartyId to prevent PII leakage in logs.
+        return "DerivativeTrade[ref=%s, %s %s on %s, strike=%s %s, qty=%s, expiry=%s, side=%s]"
+                .formatted(tradeRef, optionType, underlying, tradeDate, strike.toPlainString(),
+                           currency.getCurrencyCode(), quantity.toPlainString(), expiry, side);
     }
 
     public static final class Builder {
@@ -97,6 +99,21 @@ public final class DerivativeTrade implements TradeType {
         public Builder tradeDate(LocalDate v)      { this.tradeDate = v; return this; }
         public Builder counterpartyId(long v)      { this.counterpartyId = v; return this; }
 
+        /**
+         * Build the immutable {@link DerivativeTrade}, validating that every required
+         * field is set and that all invariants hold.
+         *
+         * @return a fully-constructed, validated {@code DerivativeTrade} — never {@code null}.
+         * @throws NullPointerException  if any required field
+         *                               ({@code tradeRef}, {@code optionType},
+         *                               {@code underlying}, {@code tradeDate},
+         *                               {@code strike}, {@code currency},
+         *                               {@code quantity}, {@code expiry}, {@code side})
+         *                               was not set.
+         * @throws IllegalStateException if {@code quantity} or {@code strike} is not strictly positive,
+         *                               {@code underlying} is blank, or
+         *                               {@code expiry} is in the past.
+         */
         public DerivativeTrade build() {
     Objects.requireNonNull(tradeRef, "tradeRef");
     Objects.requireNonNull(underlying, "underlying");

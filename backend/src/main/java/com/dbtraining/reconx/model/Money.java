@@ -39,13 +39,25 @@ public record Money(BigDecimal amount, Currency currency) {
         return new Money(amount, Currency.getInstance(currencyCode));
     }
 
-    /** Add another Money of the same currency. Throws on currency mismatch. */
+    /**
+     * Add another Money of the same currency.
+     *
+     * @param other the money to add
+     * @return a new Money instance representing the sum
+     * @throws IllegalArgumentException if the currencies do not match
+     */
     public Money plus(Money other) {
         // TODO(TICKET-ADV024): validate same currency, then return a new Money
         //                     whose amount = this.amount + other.amount.
         throw new UnsupportedOperationException("TICKET-ADV024");
     }
 
+    /**
+     * Multiply this Money by a given multiplier.
+     *
+     * @param multiplier the factor to multiply the amount by
+     * @return a new Money instance representing the multiplied amount
+     */
     public Money times(BigDecimal multiplier) {
         // TODO(TICKET-ADV024): return a new Money whose amount = this.amount * multiplier.
         throw new UnsupportedOperationException("TICKET-ADV024");

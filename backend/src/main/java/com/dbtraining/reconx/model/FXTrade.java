@@ -68,8 +68,10 @@ public final class FXTrade implements TradeType {
     }
 
     @Override public String toString() {
-        // TODO(TICKET-ADV030): "FXTrade[ref=..., CCY1/CCY2, notional=... CCY1, rate=..., side=...]"
-        throw new UnsupportedOperationException("TICKET-ADV030");
+        // NOTE: Intentionally omits counterpartyId to prevent PII leakage in logs.
+        return "FXTrade[ref=%s, %s/%s, notional=%s %s, rate=%s, side=%s]"
+                .formatted(tradeRef, ccy1.getCurrencyCode(), ccy2.getCurrencyCode(),
+                           notionalCcy1.toPlainString(), ccy1.getCurrencyCode(), fxRate.toPlainString(), side);
     }
 
     public static final class Builder {
@@ -89,6 +91,20 @@ public final class FXTrade implements TradeType {
         public Builder tradeDate(LocalDate v)      { this.tradeDate = v; return this; }
         public Builder counterpartyId(long v)      { this.counterpartyId = v; return this; }
 
+        /**
+         * Build the immutable {@link FXTrade}, validating that every required
+         * field is set and that all invariants hold.
+         *
+         * @return a fully-constructed, validated {@code FXTrade} — never {@code null}.
+         * @throws NullPointerException  if any required field
+         *                               ({@code tradeRef}, {@code ccy1},
+         *                               {@code ccy2}, {@code notionalCcy1},
+         *                               {@code fxRate}, {@code side}, {@code tradeDate})
+         *                               was not set.
+         * @throws IllegalStateException if {@code notionalCcy1} is not strictly positive,
+         *                               {@code fxRate} is negative, or
+         *                               currencies are identical.
+         */
         public FXTrade build() {
             // TODO(TICKET-ADV020):
             //   - Objects.requireNonNull each required field.

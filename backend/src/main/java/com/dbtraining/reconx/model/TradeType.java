@@ -29,31 +29,33 @@ import java.util.Comparator;
  * update when adding a new field.
  */
 
-// public sealed interface TradeType
-//         permits EquityTrade, FXTrade, BondTrade, DerivativeTrade {
-
-//     TradeRef tradeRef();
-//     Money notional();
-//     LocalDate tradeDate();
-//     AssetClass assetClass();
-
-//     enum AssetClass { EQUITY, FX, BOND, DERIVATIVE }
-// }
 
 public sealed interface TradeType
         extends Comparable<TradeType>
         permits EquityTrade, FXTrade, BondTrade, DerivativeTrade {
 
-    /** Stable natural key. Drives equals/hashCode. */
+    /**
+     * Stable natural key. Drives equals/hashCode.
+     * @return the trade reference
+     */
     TradeRef tradeRef();
 
-    /** Notional value of the trade for reconciliation summaries. */
+    /**
+     * Notional value of the trade for reconciliation summaries.
+     * @return the notional money value
+     */
     Money notional();
 
-    /** Business date the trade was struck on. */
+    /**
+     * Business date the trade was struck on.
+     * @return the date the trade occurred
+     */
     LocalDate tradeDate();
 
-    /** Discriminator for switch expressions and persistence mapping. */
+    /**
+     * Discriminator for switch expressions and persistence mapping.
+     * @return the asset class enum value
+     */
     AssetClass assetClass();
 
     Comparator<TradeType> NATURAL = Comparator
