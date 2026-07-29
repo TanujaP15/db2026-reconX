@@ -52,9 +52,9 @@ public final class EquityTrade implements TradeType {
     @Override public AssetClass assetClass(){ return AssetClass.EQUITY; }
 
     /** Notional = quantity * price in the trade currency. */
-    @Override public Money notional() {
-        // TODO(TICKET-ADV019): return new Money(quantity * price, currency).
-        throw new UnsupportedOperationException("TICKET-ADV019");
+    @Override
+    public Money notional() {
+        return new Money(quantity.multiply(price), currency);
     }
 
     public String instrumentSymbol() { return instrumentSymbol; }
@@ -83,6 +83,7 @@ public final class EquityTrade implements TradeType {
 
     /** Fluent builder. Required fields validated in {@link #build()}. */
     public static final class Builder {
+
         private TradeRef tradeRef;
         private String instrumentSymbol;
         private BigDecimal quantity;
@@ -92,37 +93,76 @@ public final class EquityTrade implements TradeType {
         private LocalDate tradeDate;
         private long counterpartyId;
 
-        public Builder tradeRef(TradeRef v)           { this.tradeRef = v;        return this; }
-        public Builder instrumentSymbol(String v)     { this.instrumentSymbol = v; return this; }
-        public Builder quantity(BigDecimal v)         { this.quantity = v;        return this; }
-        public Builder price(BigDecimal v)            { this.price = v;           return this; }
-        public Builder currency(Currency v)           { this.currency = v;        return this; }
-        public Builder currency(String code)          { return currency(Currency.getInstance(code)); }
-        public Builder side(Side v)                   { this.side = v;            return this; }
-        public Builder tradeDate(LocalDate v)         { this.tradeDate = v;       return this; }
-        public Builder counterpartyId(long v)         { this.counterpartyId = v;  return this; }
 
-        /**
-         * Build the immutable {@link EquityTrade}, validating that every required
-         * field is set and that all invariants hold.
-         *
-         * @return a fully-constructed, validated {@code EquityTrade} — never {@code null}.
-         * @throws NullPointerException  if any required field
-         *                               ({@code tradeRef}, {@code instrumentSymbol},
-         *                               {@code quantity}, {@code price}, {@code currency},
-         *                               {@code side}, {@code tradeDate})
-         *                               was not set.
-         * @throws IllegalStateException if {@code quantity} is not strictly positive,
-         *                               {@code price} is negative, or
-         *                               {@code instrumentSymbol} is blank.
-         */
+        public Builder tradeRef(TradeRef v) {
+            this.tradeRef = v;
+            return this;
+        }
+
+        public Builder instrumentSymbol(String v) {
+            this.instrumentSymbol = v;
+            return this;
+        }
+
+        public Builder quantity(BigDecimal v) {
+            this.quantity = v;
+            return this;
+        }
+
+        public Builder price(BigDecimal v) {
+            this.price = v;
+            return this;
+        }
+
+        public Builder currency(Currency v) {
+            this.currency = v;
+            return this;
+        }
+
+        public Builder currency(String code) {
+            return currency(Currency.getInstance(code));
+        }
+
+        public Builder side(Side v) {
+            this.side = v;
+            return this;
+        }
+
+        public Builder tradeDate(LocalDate v) {
+            this.tradeDate = v;
+            return this;
+        }
+
+        public Builder counterpartyId(long v) {
+            this.counterpartyId = v;
+            return this;
+        }
+
+
         public EquityTrade build() {
-            // TODO(TICKET-ADV019):
-            //   - Objects.requireNonNull each required field (tradeRef, instrumentSymbol,
-            //     quantity, price, currency, side, tradeDate).
-            //   - quantity and price must be > 0 (IllegalStateException otherwise).
-            //   - return new EquityTrade(this).
-            throw new UnsupportedOperationException("TICKET-ADV019");
+
+            Objects.requireNonNull(tradeRef, "tradeRef");
+            Objects.requireNonNull(instrumentSymbol, "instrumentSymbol");
+            Objects.requireNonNull(quantity, "quantity");
+            Objects.requireNonNull(price, "price");
+            Objects.requireNonNull(currency, "currency");
+            Objects.requireNonNull(side, "side");
+            Objects.requireNonNull(tradeDate, "tradeDate");
+
+
+            if (instrumentSymbol.isBlank()) {
+                throw new IllegalStateException("instrumentSymbol must not be blank");
+            }
+
+            if (quantity.signum() <= 0) {
+                throw new IllegalStateException("quantity must be > 0");
+            }
+
+            if (price.signum() <= 0) {
+                throw new IllegalStateException("price must be > 0");
+            }
+
+            return new EquityTrade(this);
         }
     }
 }
