@@ -1,7 +1,7 @@
 package com.dbtraining.reconx.service;
 
-import com.dbtraining.reconx.model.ReconResult;
-import com.dbtraining.reconx.model.ReconResult.Status;
+import com.dbtraining.reconx.dto.ReconResult;
+import com.dbtraining.reconx.dto.ReconResult.Status;
 
 import java.util.EnumSet;
 import java.util.Set;
@@ -44,6 +44,7 @@ public final class ReconSummaryCollector
         return EnumSet.of(Characteristics.UNORDERED);
     }
 }
+<<<<<<< HEAD
 
 public record ReconSummary(long total, long matched, long broken) {
     public static ReconSummary empty() { return new ReconSummary(0, 0, 0); }
@@ -54,3 +55,5 @@ public record ReconSummary(long total, long matched, long broken) {
         long broken;
     }
 }
+=======
+>>>>>>> e104596 (Necessary modification and updates to get rid of errors)
