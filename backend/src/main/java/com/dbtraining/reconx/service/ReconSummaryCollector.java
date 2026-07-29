@@ -44,9 +44,6 @@ public final class ReconSummaryCollector
         return EnumSet.of(Characteristics.UNORDERED);
     }
 }
-backend/src/main/java/com/dbtraining/reconx/service/ReconSummary.java:
-
-package com.dbtraining.reconx.service;
 
 public record ReconSummary(long total, long matched, long broken) {
     public static ReconSummary empty() { return new ReconSummary(0, 0, 0); }
