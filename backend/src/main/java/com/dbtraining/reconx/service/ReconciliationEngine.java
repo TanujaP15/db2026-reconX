@@ -49,8 +49,20 @@ public class ReconciliationEngine {
                 .map(in -> matchOne(in, externalByRef.get(in.tradeRef().value()), rule))
                 .toList();
     }
+    public CompletableFuture<List<ReconResult>> reconcileByCounterparty(
+        Map<Long, List<TradeType>> internalByCp,
+        Map<Long, List<TradeType>> externalByCp,
+        ReconciliationRule rule) {
 
-    /**
+    List<CompletableFuture<List<ReconResult>>> futures = internalByCp.entrySet().stream()
+            .map(e -> CompletableFuture.supplyAsync(() ->
+                    reconcile(e.getValue(), externalByCp.getOrDefault(e.getKey(), List.of()), rule)))
+            .toList();
+
+    return CompletableFuture.allOf(futures.toArray(CompletableFuture[]::new))
+            .thenApply(v -> futures.stream().flatMap(f -> f.join().stream()).toList());
+}
+    /** 
      * TICKET-ADV037 — split by counterparty, reconcile each batch concurrently,
      * combine into a single result list. Caller passes one external feed per
      * counterparty (typical real-world shape).
