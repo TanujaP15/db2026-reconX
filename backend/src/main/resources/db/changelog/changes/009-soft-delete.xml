@@ -5,10 +5,17 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                             http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.27.xsd">
 
-    <changeSet id="adv067-soft-delete" author="antigravity">
+    <!-- <changeSet id="adv067-soft-delete" author="antigravity">
         <addColumn tableName="trades">
             <column name="deleted_at" type="TIMESTAMP WITH TIME ZONE"/>
         </addColumn>
+    </changeSet> -->
+
+    <changeSet id="adv067-soft-delete" author="Gautham">
+        <comment>
+            deleted_at column already exists in 002-schema.xml.
+            No migration required.
+        </comment>
     </changeSet>
 
 </databaseChangeLog>

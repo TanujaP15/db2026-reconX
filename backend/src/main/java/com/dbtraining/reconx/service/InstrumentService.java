@@ -6,6 +6,9 @@ import com.dbtraining.reconx.repository.entity.Instrument;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * TICKET-ADV081 — @Cacheable on findBySymbol (cache name "instruments").
  * TICKET-ADV082 — TTL configured in application.yml (caffeine spec).

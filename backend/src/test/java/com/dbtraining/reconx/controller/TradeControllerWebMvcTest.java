@@ -47,7 +47,17 @@ class TradeControllerWebMvcTest {
     @Test
     @WithMockUser(roles = "TRADER")
     void create_whenAuthenticatedAsTrader_returns201() throws Exception {
-        TradeRequest req = new TradeRequest("T-123", "CP-A", "IBM", BigDecimal.TEN, BigDecimal.valueOf(150), LocalDate.now());
+        TradeRequest req =
+                            new TradeRequest(
+                                "ABC-20260730-0001",
+                                1L,
+                                1L,
+                                "EQUITY",
+                                "BUY",
+                                BigDecimal.TEN,
+                                BigDecimal.valueOf(150),
+                                LocalDate.now()
+                            );
         Trade mockTrade = new Trade("T-123", "CP-A", "IBM", BigDecimal.TEN, BigDecimal.valueOf(150), LocalDate.now());
         
         when(tradeService.create(any(), any())).thenReturn(mockTrade);
@@ -60,7 +70,17 @@ class TradeControllerWebMvcTest {
 
     @Test
     void create_whenUnauthenticated_returns401() throws Exception {
-        TradeRequest req = new TradeRequest("T-123", "CP-A", "IBM", BigDecimal.TEN, BigDecimal.valueOf(150), LocalDate.now());
+        TradeRequest req =
+                            new TradeRequest(
+                                "ABC-20260730-0001",
+                                1L,
+                                1L,
+                                "EQUITY",
+                                "BUY",
+                                BigDecimal.TEN,
+                                BigDecimal.valueOf(150),
+                                LocalDate.now()
+                            );
 
         mockMvc.perform(post("/v1/trades")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -71,7 +91,17 @@ class TradeControllerWebMvcTest {
     @Test
     @WithMockUser(roles = "VIEWER")
     void create_whenAuthenticatedAsViewer_returns403() throws Exception {
-        TradeRequest req = new TradeRequest("T-123", "CP-A", "IBM", BigDecimal.TEN, BigDecimal.valueOf(150), LocalDate.now());
+        TradeRequest req =
+                            new TradeRequest(
+                                "ABC-20260730-0001",
+                                1L,
+                                1L,
+                                "EQUITY",
+                                "BUY",
+                                BigDecimal.TEN,
+                                BigDecimal.valueOf(150),
+                                LocalDate.now()
+                            );
 
         mockMvc.perform(post("/v1/trades")
                 .contentType(MediaType.APPLICATION_JSON)

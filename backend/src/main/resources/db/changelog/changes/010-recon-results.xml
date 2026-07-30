@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 
+1. Hibernate is failing because ReconResultEntity maps to recon_results, and that table does not exist.
+2. The project contains a complete persistence layer (ReconResultEntity, ReconResultRepository, and ReconciliationService saving entities), indicating persistence is intended.
+3. The Day 3 integration test (ADV045) explicitly verifies persisted reconciliation results via ReconResultRepository.findAll(), so removing the entity/repository would contradict the later course material.
+4. None of the supplied guides contain the Liquibase migration that would create the required table, leaving a gap between the Java code and the database schema. 
+-->
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.27.xsd">
+
+    <changeSet id="010-create-recon-results" author="Gautham">
+
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="recon_results"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="recon_results">
+
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+
+            <column name="trade_ref" type="VARCHAR(60)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="status" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="discrepancy_type" type="VARCHAR(100)"/>
+
+            <column name="details" type="VARCHAR(1000)"/>
+
+            <column name="created_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+
+        </createTable>
+
+    </changeSet>
+
+</databaseChangeLog>

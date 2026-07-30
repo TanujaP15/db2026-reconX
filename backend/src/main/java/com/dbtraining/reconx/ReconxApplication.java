@@ -19,7 +19,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
  * </ul>
  */
 @SpringBootApplication
-@EnableJpaAuditing
+// @EnableJpaAuditing --> Causing BeanDefinitionOverrideException error when running tests, so just kept the one in JpaConfig.java
 @EnableCaching
 @EnableKafka
 @EnableAsync

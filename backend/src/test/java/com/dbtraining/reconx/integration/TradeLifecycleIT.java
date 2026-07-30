@@ -42,7 +42,17 @@ class TradeLifecycleIT {
         headers.setBearerAuth(token);
 
         // 2. Create trade
-        TradeRequest tradeReq = new TradeRequest("T-IT-1", "DB", "AAPL", BigDecimal.valueOf(100), BigDecimal.valueOf(150), LocalDate.now());
+        TradeRequest tradeReq =
+                                new TradeRequest(
+                                    "ABC-20260730-0002",
+                                    1L,
+                                    1L,
+                                    "EQUITY",
+                                    "BUY",
+                                    BigDecimal.valueOf(100),
+                                    BigDecimal.valueOf(150),
+                                    LocalDate.now()
+                                );
         HttpEntity<TradeRequest> createEntity = new HttpEntity<>(tradeReq, headers);
         ResponseEntity<TradeResponse> createRes = restTemplate.postForEntity("/v1/trades", createEntity, TradeResponse.class);
         
