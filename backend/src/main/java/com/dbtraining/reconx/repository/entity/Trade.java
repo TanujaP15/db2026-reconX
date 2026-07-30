@@ -80,6 +80,8 @@ public class Trade {
     @Column(name = "modified_at")
     private Instant modifiedAt;
 
+    public Trade() {
+    }
 
     public Trade(String tradeRef,
                  String counterpartyName,
