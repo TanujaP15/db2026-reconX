@@ -32,6 +32,12 @@ public class Instrument {
 
     public Instrument() {}
 
+    public void setSymbol(String symbol) { this.symbol = symbol; }
+    public void setName(String name) { this.name = name; }
+    public void setAssetClass(String assetClass) { this.assetClass = assetClass; }
+    public void setCurrency(String currency) { this.currency = currency; }
+    public void setIsin(String isin) { this.isin = isin; }
+
     public Long getId()         { return id; }
     public String getSymbol()   { return symbol; }
     public String getName()     { return name; }

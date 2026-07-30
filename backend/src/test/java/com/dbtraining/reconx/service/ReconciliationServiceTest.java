@@ -1,7 +1,11 @@
 package com.dbtraining.reconx.service;
 
-import com.dbtraining.reconx.model.ReconResult;
-import com.dbtraining.reconx.model.Trade;
+import com.dbtraining.reconx.dto.ReconResult;
+import com.dbtraining.reconx.model.EquityTrade;
+// import com.dbtraining.reconx.model.Trade;
+import com.dbtraining.reconx.model.TradeRef;
+import com.dbtraining.reconx.model.Side;
+import com.dbtraining.reconx.repository.entity.ReconResultEntity;
 import com.dbtraining.reconx.repository.ReconResultRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -23,18 +27,40 @@ class ReconciliationServiceTest {
         ReconciliationEngine engine = new ReconciliationEngine();
         ReconciliationService svc = new ReconciliationService(engine, repo);
 
-        Trade i = new Trade("TRD-1", "CP-1", "SAP.DE",
-                new BigDecimal("10"), new BigDecimal("100"), LocalDate.now());
-        Trade e = new Trade("TRD-1", "CP-1", "SAP.DE",
-                new BigDecimal("10"), new BigDecimal("100"), LocalDate.now());
+        EquityTrade internal = EquityTrade.builder()
+                .tradeRef(TradeRef.of("TRD-20260730-0001"))
+                .instrumentSymbol("SAP.DE")
+                .price(new BigDecimal("10"))
+                .quantity(new BigDecimal("100"))
+                .currency("EUR")
+                .side(Side.BUY)
+                .tradeDate(LocalDate.now())
+                .counterpartyId(1L)
+                .build();
+
+        EquityTrade external = EquityTrade.builder()
+                .tradeRef(TradeRef.of("TRD-20260730-0001"))
+                .instrumentSymbol("SAP.DE")
+                .price(new BigDecimal("10"))
+                .quantity(new BigDecimal("100"))
+                .currency("EUR")
+                .side(Side.BUY)
+                .tradeDate(LocalDate.now())
+                .counterpartyId(1L)
+                .build();
+
+        // Trade i = new Trade("TRD-1", "CP-1", "SAP.DE",
+        //         new BigDecimal("10"), new BigDecimal("100"), LocalDate.now());
+        // Trade e = new Trade("TRD-1", "CP-1", "SAP.DE",
+        //         new BigDecimal("10"), new BigDecimal("100"), LocalDate.now());
 
         // when
-        svc.runRecon(List.of(i), List.of(e));
+        svc.runReconWithDomainTrades(List.of(internal), List.of(external));
 
         // then
-        ArgumentCaptor<ReconResult> captor = ArgumentCaptor.forClass(ReconResult.class);
+        ArgumentCaptor<ReconResultEntity> captor = ArgumentCaptor.forClass(ReconResultEntity.class);
         verify(repo).save(captor.capture());
-        assertThat(captor.getValue().tradeRef()).isEqualTo("TRD-1");
-        assertThat(captor.getValue().status()).isEqualTo(ReconResult.Status.MATCHED);
+        assertThat(captor.getValue().getTradeRef()).isEqualTo("TRD-20260730-0001");
+        assertThat(captor.getValue().getStatus()).isEqualTo(ReconResult.Status.MATCHED);
     }
 }

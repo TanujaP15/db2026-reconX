@@ -1,7 +1,8 @@
 package com.dbtraining.reconx.service;
 
-import com.dbtraining.reconx.model.ReconResult;
-import com.dbtraining.reconx.model.Trade;
+import com.dbtraining.reconx.dto.ReconResult;
+import com.dbtraining.reconx.repository.entity.ReconResultEntity;
+import com.dbtraining.reconx.repository.entity.Trade;
 import com.dbtraining.reconx.repository.ExternalTradeRepository;
 import com.dbtraining.reconx.repository.InternalTradeRepository;
 import com.dbtraining.reconx.repository.ReconResultRepository;
@@ -84,12 +85,12 @@ class ReconciliationIntegrationTest {
                 externalTradeRepo.findAll());
 
         // then
-        List<ReconResult> persisted = reconResultRepo.findAll();
+        List<ReconResultEntity> persisted = reconResultRepo.findAll();
 
         assertThat(persisted).hasSize(1);
-        assertThat(persisted.get(0).status())
+        assertThat(persisted.get(0).getStatus())
                 .isEqualTo(ReconResult.Status.MATCHED);
-        assertThat(persisted.get(0).tradeRef())
+        assertThat(persisted.get(0).getTradeRef())
                 .isEqualTo("TRD-INT-1");
     }
 }

@@ -47,10 +47,14 @@ public record Money(BigDecimal amount, Currency currency) {
      * @throws IllegalArgumentException if the currencies do not match
      */
     public Money plus(Money other) {
-        // TODO(TICKET-ADV024): validate same currency, then return a new Money
-        //                     whose amount = this.amount + other.amount.
-        throw new UnsupportedOperationException("TICKET-ADV024");
+    Objects.requireNonNull(other, "other");
+    if (!currency.equals(other.currency)) {
+        throw new IllegalArgumentException(
+                "Cannot add Money with different currencies: "
+                + currency + " vs " + other.currency);
     }
+    return new Money(amount.add(other.amount), currency);
+}
 
     /**
      * Multiply this Money by a given multiplier.
@@ -59,7 +63,10 @@ public record Money(BigDecimal amount, Currency currency) {
      * @return a new Money instance representing the multiplied amount
      */
     public Money times(BigDecimal multiplier) {
-        // TODO(TICKET-ADV024): return a new Money whose amount = this.amount * multiplier.
-        throw new UnsupportedOperationException("TICKET-ADV024");
+    Objects.requireNonNull(multiplier, "multiplier");
+    if (multiplier.signum() < 0) {
+        throw new IllegalArgumentException("Multiplier cannot be negative: " + multiplier);
     }
+    return new Money(amount.multiply(multiplier), currency);
+}
 }

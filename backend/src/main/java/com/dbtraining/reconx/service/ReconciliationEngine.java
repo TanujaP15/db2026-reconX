@@ -67,17 +67,6 @@ public class ReconciliationEngine {
      * combine into a single result list. Caller passes one external feed per
      * counterparty (typical real-world shape).
      */
-    public CompletableFuture<List<ReconResult>> reconcileByCounterparty(
-            Map<Long, List<TradeType>> internalByCp,
-            Map<Long, List<TradeType>> externalByCp,
-            ReconciliationRule rule) {
-        // TODO(TICKET-ADV037): for each counterparty key in internalByCp launch a
-        //   CompletableFuture.supplyAsync(() -> reconcile(...)). Combine via
-        //   CompletableFuture.allOf(...).thenApply(v -> futures.stream()
-        //       .flatMap(f -> f.join().stream()).toList()).
-        throw new UnsupportedOperationException("TICKET-ADV037");
-    }
-
     private ReconResult matchOne(TradeType internal, TradeType external, ReconciliationRule rule) {
         String ref = internal.tradeRef().value();
         if (external == null) {
