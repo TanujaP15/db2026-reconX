@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="utf-8" />
+    <title>ReconX (static) — Trades</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Apply saved theme before page paints -->
+    <script>
+        (function () {
+            const saved = localStorage.getItem("reconx-theme") || "light";
+            document.documentElement.setAttribute("data-theme", saved);
+        })();
+    </script>
+
+    <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header class="layout__header" role="banner">
+        <h1 class="layout__title">ReconX</h1>
+
+        <nav class="layout__nav" aria-label="Main navigation">
+            <a href="dashboard.html">Dashboard</a>
+            <a href="trades.html" aria-current="page">Trades</a>
+            <a href="recon.html">Recon</a>
+        </nav>
+
+        <button id="theme-toggle" aria-label="Toggle light/dark theme">
+            🌗
+        </button>
+    </header>
+
+    <!-- Sidebar -->
+    <aside class="layout__sidebar" role="complementary">
+        <h2>Trade Filters</h2>
+
+        <ul>
+            <li><a href="#">All Trades</a></li>
+            <li><a href="#">Matched</a></li>
+            <li><a href="#">Pending</a></li>
+            <li><a href="#">Breaks</a></li>
+        </ul>
+    </aside>
+
+    <!-- Main -->
+    <main class="layout__main" role="main">
+
+        <section aria-labelledby="trades-heading">
+
+            <h2 id="trades-heading">
+                Trades
+            </h2>
+
+            <div class="table-scroll">
+
+                <table class="data-table" id="trades-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th data-col="tradeRef" data-dir="asc">
+                                Trade Ref
+                                <span class="resize-handle"></span>
+                            </th>
+
+                            <th data-col="symbol" data-dir="asc">
+                                Instrument
+                                <span class="resize-handle"></span>
+                            </th>
+
+                            <th
+                                data-col="quantity"
+                                data-dir="asc"
+                                data-type="number">
+                                Quantity
+                                <span class="resize-handle"></span>
+                            </th>
+
+                            <th
+                                data-col="price"
+                                data-dir="asc"
+                                data-type="number">
+                                Price
+                                <span class="resize-handle"></span>
+                            </th>
+
+                            <th data-col="status" data-dir="asc">
+                                Status
+                                <span class="resize-handle"></span>
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="trades-tbody">
+                        <!-- Rows inserted by trades.js -->
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="layout__footer" role="contentinfo">
+        <small>ReconX TDI 2026 · Trades</small>
+    </footer>
+
+    <script src="js/theme.js"></script>
+    <script src="js/trades.js"></script>
+
+</body>
+
+</html>
