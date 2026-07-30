@@ -80,7 +80,27 @@ public class Trade {
     @Column(name = "modified_at")
     private Instant modifiedAt;
 
-    public Trade() {}
+
+    public Trade(String tradeRef,
+                 String counterpartyName,
+                 String instrumentSymbol,
+                 BigDecimal quantity,
+                 BigDecimal price,
+                 LocalDate tradeDate) {
+        this.tradeRef = tradeRef;
+        this.quantity = quantity;
+        this.price = price;
+        this.tradeDate = tradeDate;
+        this.side = "BUY";
+        this.assetClass = "EQUITY";
+
+        this.counterparty = new Counterparty();
+        this.counterparty.setName(counterpartyName);
+
+        this.instrument = new Instrument();
+        this.instrument.setSymbol(instrumentSymbol);
+        this.instrument.setCurrency("EUR");
+    }
 
     /** Soft-delete: set deletedAt so @SQLRestriction filters this out. */
     public void softDelete() { this.deletedAt = Instant.now(); }
