@@ -26,6 +26,7 @@
     <include file="changes/007-users-rbac.xml"    relativeToChangelogFile="true"/>
     <include file="changes/008-seed.xml"          relativeToChangelogFile="true"/>
     <include file="changes/008-seed-trades.xml"  relativeToChangelogFile="true"/>
+    <include file="changes/009-soft-delete.xml"   relativeToChangelogFile="true"/>
     <changeSet id="tag-release-1-0" author="trainer">
         <tagDatabase tag="release-1.0"/>
     </changeSet>    
