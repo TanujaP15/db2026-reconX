@@ -12,7 +12,7 @@ import com.dbtraining.reconx.repository.entity.Trade;
 // import com.dbtraining.reconx.dto.TradeEvent;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-// import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 // import java.util.UUID;
 
-// import static com.dbtraining.reconx.repository.TradeSpecifications.*;
+import static com.dbtraining.reconx.repository.TradeSpecifications.*;
 
 /**
  * ============================================================================
@@ -85,10 +85,11 @@ public class TradeService {
 
     @Transactional(readOnly = true)
     public Page<Trade> list(LocalDate from, LocalDate to, String status, Long counterpartyId, Pageable pageable) {
-        // TODO(TICKET-ADV055 + TICKET-ADV056): combine the static helpers from
-        //   TradeSpecifications (hasStatus, tradeDateBetween, hasCounterparty)
-        //   via Specification.where(...).and(...) and call
-        //   tradeRepo.findAll(spec, pageable). Until JPA is in place, throw.
-        throw new UnsupportedOperationException("TICKET-ADV055");
+        Specification<Trade> spec = Specification
+                .where(tradeDateBetween(from, to))
+                .and(hasStatus(status))
+                .and(hasCounterparty(counterpartyId));
+
+        return tradeRepo.findAll(spec, pageable);
     }
 }
