@@ -48,7 +48,7 @@ function Trades() {
         value={search}
         onChange={(e) => setSearch(e.target.value.toUpperCase())}
       />
-      <DataTable>
+      <DataTable rows={data.items}>
         <DataTable.Header columns={[
           { key: 'tradeRef', label: 'Ref' },
           { key: 'symbol',   label: 'Symbol' },
@@ -56,18 +56,17 @@ function Trades() {
           { key: 'price',    label: 'Price' },
           { key: 'status',   label: 'Status' },
         ]} />
-      <DataTable.Body
-        rows={data.items}
-        render={(trade) => (
-          <>
-            <span>{trade.tradeRef}</span>
-            <span>{trade.symbol}</span>
-            <span>{trade.qty}</span>
-            <span>{trade.price}</span>
-            <span>{trade.status}</span>
-          </>
-        )}
-      />
+        <DataTable.Body
+          render={(trade) => (
+            <>
+              <span>{trade.tradeRef}</span>
+              <span>{trade.symbol}</span>
+              <span>{trade.qty}</span>
+              <span>{trade.price}</span>
+              <span>{trade.status}</span>
+            </>
+          )}
+        />
         <DataTable.Pagination
           page={page}
           totalPages={Math.max(1, data.totalPages)}

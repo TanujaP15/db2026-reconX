@@ -1,25 +1,73 @@
-// TICKET-ADV114 — Compound <DataTable> with Header / Body / Pagination subcomponents.
-import React, { createContext, useContext } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useMemo,
+  useState,
+} from "react";
 
-const DataTableContext = createContext({ sort: null, page: 0, size: 20 });
+const DataTableContext = createContext();
 
-export default function DataTable({ children, sort, page = 0, size = 20, onSortChange }) {
+export default function DataTable({ children, rows = [] }) {
+  const [sortKey, setSortKey] = useState(null);
+  const [sortDir, setSortDir] = useState("asc");
+
+  const sortedRows = useMemo(() => {
+    if (!sortKey) return rows;
+
+    return [...rows].sort((a, b) => {
+      if (a[sortKey] < b[sortKey]) {
+        return sortDir === "asc" ? -1 : 1;
+      }
+
+      if (a[sortKey] > b[sortKey]) {
+        return sortDir === "asc" ? 1 : -1;
+      }
+
+      return 0;
+    });
+  }, [rows, sortKey, sortDir]);
+
   return (
-    <DataTableContext.Provider value={{ sort, page, size, onSortChange }}>
-      <div className="data-table">{children}</div>
+    <DataTableContext.Provider
+      value={{
+        rows: sortedRows,
+        sortKey,
+        sortDir,
+        setSortKey,
+        setSortDir,
+      }}
+    >
+      <div className="data-table">
+        {children}
+      </div>
     </DataTableContext.Provider>
   );
 }
 
 DataTable.Header = function Header({ columns }) {
-  const { sort, onSortChange } = useContext(DataTableContext);
+  const {
+    sortKey,
+    sortDir,
+    setSortKey,
+    setSortDir,
+  } = useContext(DataTableContext);
+
   return (
     <div className="data-table__header" role="row">
       {columns.map((c) => (
         <button
           key={c.key}
-          className={`data-table__th data-table__th--${sort === c.key ? 'active' : 'idle'}`}
-          onClick={() => onSortChange && onSortChange(c.key)}
+          className={`data-table__th data-table__th--${
+            sortKey === c.key ? "active" : "idle"
+          }`}
+          onClick={() => {
+            if (sortKey === c.key) {
+              setSortDir(sortDir === "asc" ? "desc" : "asc");
+            } else {
+              setSortKey(c.key);
+              setSortDir("asc");
+            }
+          }}
         >
           {c.label}
         </button>
@@ -28,7 +76,9 @@ DataTable.Header = function Header({ columns }) {
   );
 };
 
-DataTable.Body = function Body({ rows, render }) {
+DataTable.Body = function Body({ render }) {
+  const { rows } = useContext(DataTableContext);
+
   return (
     <div className="data-table__body">
       {rows.map((row, i) => (
@@ -40,12 +90,30 @@ DataTable.Body = function Body({ rows, render }) {
   );
 };
 
-DataTable.Pagination = function Pagination({ page, totalPages, onChange }) {
+DataTable.Pagination = function Pagination({
+  page,
+  totalPages,
+  onChange,
+}) {
   return (
     <nav className="data-table__pagination" aria-label="Pagination">
-      <button disabled={page === 0} onClick={() => onChange(page - 1)}>‹</button>
-      <span>{page + 1} / {totalPages}</span>
-      <button disabled={page >= totalPages - 1} onClick={() => onChange(page + 1)}>›</button>
+      <button
+        disabled={page === 0}
+        onClick={() => onChange(page - 1)}
+      >
+        ‹
+      </button>
+
+      <span>
+        {page + 1} / {totalPages}
+      </span>
+
+      <button
+        disabled={page >= totalPages - 1}
+        onClick={() => onChange(page + 1)}
+      >
+        ›
+      </button>
     </nav>
   );
 };
