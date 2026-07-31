@@ -78,3 +78,19 @@ button:disabled { opacity: 0.6; cursor: not-allowed; }
 
 /* TICKET-ADV109 — keyboard focus visibility */
 :focus-visible { outline: 2px solid var(--color-primary); outline-offset: 2px; }
+
+.page-skeleton {
+    padding: 20px;
+}
+
+.skeleton {
+    height: 18px;
+    background: #e5e5e5;
+    border-radius: 4px;
+    margin-bottom: 12px;
+}
+
+.skeleton-title {
+    width: 220px;
+    height: 28px;
+}

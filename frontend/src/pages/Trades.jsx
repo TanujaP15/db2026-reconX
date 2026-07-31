@@ -1,6 +1,6 @@
 // TICKET-ADV114 — Compound DataTable.
 // TICKET-ADV117 — useDebouncedSearch.
-import React, { useEffect, useState } from 'react';
+import React, { useCallback,useEffect, useState } from 'react';
 import { withAuth } from '@components/withAuth.jsx';
 import DataTable from '@components/DataTable.jsx';
 import { useDebouncedSearch } from '@hooks/useDebouncedSearch.js';
