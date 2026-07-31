@@ -7,32 +7,65 @@ import { api } from '@services/apiService.js';
 export default function Login() {
   const { login } = useAuth();
   const navigate = useNavigate();
+
   const [email, setEmail] = useState('admin@db.com');
   const [password, setPassword] = useState('admin123');
   const [error, setError] = useState(null);
 
   async function submit(e) {
     e.preventDefault();
-    // TODO(TICKET-ADV072):
-    //   1. call api.login(email, password) — it returns { token, role }.
-    //   2. on success: call login(token, role) from AuthContext, then
-    //      navigate('/').
-    //   3. on failure: setError(err.message) so the alert div renders.
+    setError(null);
+
+    try {
+      const { token, role } = await api.login(email, password);
+
+      login(token, role);
+
+      navigate('/');
+    } catch (err) {
+      setError(err.message);
+    }
   }
 
   return (
     <form onSubmit={submit} className="login-form">
       <h2>Sign in</h2>
-      <label>
+
+      <label htmlFor="email">
         Email
-        <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" required />
       </label>
-      <label>
+      <input
+        id="email"
+        name="email"
+        type="email"
+        autoComplete="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        required
+      />
+
+      <label htmlFor="password">
         Password
-        <input value={password} onChange={(e) => setPassword(e.target.value)} type="password" required />
       </label>
-      {error && <div role="alert" className="form-error">{error}</div>}
-      <button type="submit">Sign in</button>
+      <input
+        id="password"
+        name="password"
+        type="password"
+        autoComplete="current-password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        required
+      />
+
+      {error && (
+        <div role="alert" className="form-error">
+          {error}
+        </div>
+      )}
+
+      <button type="submit">
+        Sign in
+      </button>
     </form>
   );
 }

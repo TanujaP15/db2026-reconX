@@ -1,6 +1,6 @@
 // TICKET-ADV114 — Compound DataTable.
 // TICKET-ADV117 — useDebouncedSearch.
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { withAuth } from '@components/withAuth.jsx';
 import DataTable from '@components/DataTable.jsx';
 import { useDebouncedSearch } from '@hooks/useDebouncedSearch.js';
@@ -11,6 +11,27 @@ function Trades() {
   const debounced = useDebouncedSearch(search, 300);
   const [page, setPage] = useState(0);
   const [data, setData] = useState({ items: [], totalPages: 0 });
+  useEffect(() => {
+    async function fetchTrades() {
+      try {
+        const response = await api.listTrades({
+          page,
+          status: debounced,
+        });
+
+        setData(response);
+      } catch (error) {
+        console.error(error);
+
+        setData({
+          items: [],
+          totalPages: 0,
+        });
+      }
+    }
+
+    fetchTrades();
+  }, [page, debounced]);
 
   // TODO(TICKET-ADV114 + ADV117): useEffect that:
   //   - builds a query string from `page` and `debounced` (status filter)
@@ -35,8 +56,18 @@ function Trades() {
           { key: 'price',    label: 'Price' },
           { key: 'status',   label: 'Status' },
         ]} />
-        {/* TODO(TICKET-ADV114): render a DataTable.Body with `rows={data.items}`
-            and a `render` prop that returns one <span> per column. */}
+      <DataTable.Body
+        rows={data.items}
+        render={(trade) => (
+          <>
+            <span>{trade.tradeRef}</span>
+            <span>{trade.symbol}</span>
+            <span>{trade.qty}</span>
+            <span>{trade.price}</span>
+            <span>{trade.status}</span>
+          </>
+        )}
+      />
         <DataTable.Pagination
           page={page}
           totalPages={Math.max(1, data.totalPages)}
