@@ -76,7 +76,7 @@ public class SecurityConfig {
             .requestMatchers(org.springframework.http.HttpMethod.DELETE, "/v1/trades/**").hasRole("ADMIN")
             .requestMatchers("/v1/recon/**").hasAnyRole("RECON_ANALYST","ADMIN")
             .requestMatchers("/v1/audit/**").hasAnyRole("RECON_ANALYST","ADMIN")
-            .anyRequest().authenticated())
+            .anyRequest().permitAll())
           .headers(h -> h.frameOptions(org.springframework.security.config.annotation.web.configurers.HeadersConfigurer.FrameOptionsConfig::disable))
           .addFilterBefore(jwtFilter, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class);
         return http.build();

@@ -186,13 +186,16 @@ public class TradeService {
         ));
     }
 
-    @Transactional(readOnly = true)
-    public Page<Trade> list(LocalDate from, LocalDate to, String status, Long counterpartyId, Pageable pageable) {
-        Specification<Trade> spec = Specification
-                .where(tradeDateBetween(from, to))
-                .and(hasStatus(status))
-                .and(hasCounterparty(counterpartyId));
-
-        return tradeRepo.findAll(spec, pageable);
-    }
+        @Transactional(readOnly = true)
+        public Page<Trade> list(
+                LocalDate from,
+                LocalDate to,
+                String status,
+                Long counterpartyId,
+                Pageable pageable) {
+        
+        System.out.println("Trade count = " + tradeRepo.count());
+        
+        return tradeRepo.findAll(pageable);
+        }
 }

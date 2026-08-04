@@ -52,9 +52,12 @@ public final class TradeSpecifications {
     private TradeSpecifications() {}
 
     public static Specification<Trade> hasStatus(String status) {
-        return (root, q, cb) -> status == null
-            ? cb.conjunction()
-            : cb.equal(root.get("status"), status);
+        return (root, q, cb) -> {
+            if (status == null || status.isBlank()) {
+                return cb.conjunction();
+            }
+            return cb.equal(root.get("status"), status);
+        };
     }
 
     public static Specification<Trade> tradeDateBetween(LocalDate from, LocalDate to) {
@@ -67,8 +70,11 @@ public final class TradeSpecifications {
     }
 
     public static Specification<Trade> hasCounterparty(Long counterpartyId) {
-        return (root, q, cb) -> counterpartyId == null
-            ? cb.conjunction()
-            : cb.equal(root.get("counterparty").get("id"), counterpartyId);
+        return (root, q, cb) -> {
+            if (counterpartyId == null) {
+                return cb.conjunction();
+            }
+            return cb.equal(root.get("counterparty").get("id"), counterpartyId);
+        };
     }
 }
